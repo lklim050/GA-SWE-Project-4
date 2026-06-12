@@ -6,7 +6,7 @@ import {
   readAllAppts,
   seedAppts,
   updateAppt,
-} from "../controllers/appts.js";
+} from "../controllers/ref/appts.js";
 
 const router = express.Router({ mergeParams: true });
 

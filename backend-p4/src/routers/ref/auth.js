@@ -3,9 +3,9 @@ import { getAllUsers, login, refresh, register } from "../controllers/auth.js";
 import {
   validateLoginData,
   validateRegistrationData,
-} from "../validators/auth.js";
-import checkError from "../validators/checkErrors.js";
-import { authAdmin } from "../middlewares/auth.js";
+} from "../../validators/auth.js";
+import checkError from "../../validators/checkErrors.js";
+import { authAdmin } from "../../middlewares/ref/auth.js";
 
 const router = express.Router();
 

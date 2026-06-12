@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// prisma/schema.prisma
+
+// 1. Define the constraints, fixed choices
+enum Role {
+  HOST
+  USER
+  ADMIN
+}
+
+enum QuestionType {
+  RADIO
+  CHECKBOX
+  SELECT
+  TEXT
+}
+
+model User {
+  uuid             String           @id @default(uuid()) // Primary Key
+  email            String           @unique
+  name             String
+  password         String
+  role             Role             @default(USER)
+  points_bal       Int              @default(0)
+  
+  // Relations
+  created_surveys  Survey[]         @relation("SurveyCreator")
+  responses        SurveyResponse[]
+
+  @@map("users")
+}
+
+model Survey {
+  id            Int              @id @default(autoincrement())
+  title         String
+  points_reward Int              @default(0)
+  is_published  Boolean          @default(false)
+  created_by    String  
+  // Relations         
+  creator       User             @relation("SurveyCreator", fields: [created_by], references: [uuid], onDelete: Cascade)
+  questions     Question[]
+  responses     SurveyResponse[]
+
+  @@map("surveys")
+}
+
+model Question {
+  id            Int      @id @default(autoincrement())
+  survey_id     Int
+  question_text String   @db.Text
+  type          QuestionType
+  options       Json?
+  survey        Survey   @relation(fields: [survey_id], references: [id], onDelete: Cascade)
+
+  @@map("questions") 
+}
+
+model SurveyResponse {
+  id              Int      @id @default(autoincrement())
+  user_id         String   
+  survey_id       Int
+  answers_payload Json
+  status          String   @default("pending")
+  ai_fraud_notes  String?  @db.Text
+  user            User             @relation(fields: [user_id], references: [uuid], onDelete: Cascade)
+  survey          Survey           @relation(fields: [survey_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, survey_id])
+  @@map("survey_responses")
+}

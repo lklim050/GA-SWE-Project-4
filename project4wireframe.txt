@@ -1,0 +1,64 @@
+Refined Agile User Stories & Technical Specifications
+1. The Host Persona (Business & Admin Dashboard)
+Story 1 (Dynamic Survey Creation): As a Host, I want to create customized surveys containing a mix of Multiple-Choice Questions (MCQs) and Open-Ended Text fields, assigning a specific points value to the completion of each survey.
+
+Technical Implementation: Your Angular frontend will use Reactive Forms (FormArray) to allow hosts to dynamically add, edit, or remove questions before publishing them to the PostgreSQL database.
+
+Story 2 (AI Response Integrity & Automated Escrow): As a Host, I want incoming user submissions to be automatically screened for fraud and text quality so that I do not spend marketing budget on fake data.
+
+Technical Implementation: Your Express backend will intercept text submissions, route them through OpenAI's JSON Schema mode to check for gibberish/copy-pasting, and automatically mark the submission status as 'approved' or 'flagged' in PostgreSQL. Points are only credited if approved.
+
+Story 3 (AI Text Summarization & Sentiment Analytics): As a Host, I want a data analytics dashboard that displays visual metric charts for MCQ data and uses AI to extract key themes and word frequencies from free-text feedback.
+
+Technical Implementation: For MCQs, you will write basic SQL group-by aggregates to feed frontend charts. For open text, your backend will send an aggregated array of text answers to OpenAI to return a structured JSON object containing a summary, topKeywords[], and a sentimentScore.
+
+Story 4 (Public Publishing - Stretch Goal): As a Host, I want to toggle a survey's visibility to "Public" or post community news articles so that the platform's public audience can view aggregated data insights or research trends.
+
+2. The User Persona (Respondent & Rewards Dashboard)
+Story 1 (Personalized Feed & Discovery): As a User, I want to log in and see a personalized dashboard feed displaying active, uncompleted surveys with their respective point values, alongside a search bar to look up historical or public host articles.
+
+Technical Implementation: You will use TanStack Query for Angular (injectQuery) to cleanly fetch and cache available surveys, ensuring an excellent, snappy user experience.
+
+Story 2 (Preventing Double-Submissions): As a User, I want to complete surveys through a clean step-by-step UI wizard, knowing that my progress is securely submitted.
+
+Technical Implementation: Your PostgreSQL database will enforce a strict relational composite unique constraint (user_id + survey_id), programmatically ensuring a user cannot exploit the system by filling out the same survey multiple times.
+
+Story 3 (Points Ledger & Voucher Redemption - Stretch Goal): As a User, I want to track my total earned points balance and browse a digital rewards catalogue where I can exchange my points balance for shopping or dining vouchers.
+
+Technical Implementation: You will use PostgreSQL Database Transactions (BEGIN / COMMIT) on the Express backend when a user redeems a voucher. This ensures that deducting points from the user's balance and generating the voucher code happen as an atomic unit—preventing race conditions or double-spending.
+
+Database Architecture Mapping (PostgreSQL)
+To help you visualize how your backend will track this data over the next fortnight, here is how your foundational database tables will connect relationally:
+
+  ┌───────────────────────────┐             ┌───────────────────────────┐             ┌───────────────────────────┐
+  │           users           │             │          surveys          │             │         questions         │
+  ├───────────────────────────┤             ├───────────────────────────┤             ├───────────────────────────┤
+  │ id : SERIAL (PK)          │             │ id : SERIAL (PK)          │             │ id : SERIAL (PK)          │
+  │ email : VARCHAR(100)      │◄───────────┼ │ title : VARCHAR(255)      │             │ survey_id : INT (FK) ────┼┐
+  │ name : VARCHAR(100)       │ (created_by)│ points_reward : INT       │             │ type : VARCHAR(50)        ││
+  │ password : VARCHAR(100)   │             │ is_published : BOOLEAN    │             │ options : JSONB           ││
+  │ role : VARCHAR(50)        │             └─────────────┬─────────────┘             └───────────────────────────┘│
+  │ points_bal : INT          │                           │                                                        │
+  └─────────────┬─────────────┘                           ▼                                                        │
+                │                               ┌───────────────────────────┐                                      │
+                │                               │     survey_responses      │                                      │
+                └──────────────────────────────►├───────────────────────────┤                                      │
+                           (user_id)            │ id : SERIAL (PK)          │                                      │
+                                                │ user_id : INT (FK)        │                                      │
+                                                │ survey_id : INT (FK)      │◄─────────────────────────────────────┘
+                                                │ status : VARCHAR(50)      │ 
+                                                │ ai_fraud_notes : TEXT     │
+                                                └───────────────────────────┘
+                                         [CONSTRAINT: UNIQUE(user_id, survey_id)]
+Suggested Development Strategy for Your 17 Days
+Since time is short, divide your remaining days strictly to hit your Core Goals first before touching any Stretch Goals:
+
+Days 1 to 5 (The Core Engine): Set up PostgreSQL and Express. Build the tables above and write the endpoints to create a survey and submit a response. Get the OpenAI validation check working perfectly in isolation via Postman.
+
+Days 6 to 12 (The Angular Interface): Set up Angular with Tailwind CSS and TanStack Query. Build the User's feed and the Multi-step survey answering interface. Link it to your Express backend.
+
+Days 13 to 15 (The Host Dashboard & Analytics): Build the Host interface to view survey charts and the "Generate AI Summary" button for open text fields.
+
+Days 16 & 17 (Polishing & Stretch Goals): If you have extra time, add the Rewards/Voucher page. Otherwise, focus heavily on error handling, loading spinners, and deployment testing.
+
+This project scope is incredibly clean, perfectly matches your target stack, and provides an outstanding narrative for your career transition into the Singapore software landscape. Shall we start writing the exact SQL setup script to create your PostgreSQL tables?
