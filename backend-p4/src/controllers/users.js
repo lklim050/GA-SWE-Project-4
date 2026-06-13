@@ -83,7 +83,13 @@ export const loginUser = async (req, res) => {
     });
 
     // Returning user.uuid to replace old MongoDB ._id reference
-    return res.json({ access, refresh, uuid: user.uuid, email: user.email });
+    return res.json({
+      access,
+      refresh,
+      uuid: user.uuid,
+      email: user.email,
+      role: user.role,
+    });
   } catch (error) {
     console.error(error.message);
     return res.status(400).json({ status: "error", msg: "login failed" });

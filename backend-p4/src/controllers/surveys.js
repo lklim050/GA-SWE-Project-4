@@ -13,18 +13,37 @@
 
 import prisma from "../db/prisma.js";
 
-// 1. CREATE A NEW SURVEY
 export const createSurvey = async (req, res) => {
   try {
-    const { id, title, points_reward, is_published } = req.body;
+    const { title, points_reward, is_published } = req.body;
+    // use middleware auth user id instead from req.body
+    const id = req.decoded?.id || req.decoded?.uuid;
 
-    // Verify the host user exists first
+    // check if the host user exists first
     const user = await prisma.user.findUnique({
       where: { uuid: id },
     });
     if (!user) return res.status(404).json({ msg: "user not found" });
 
-    // Create the survey record linked to the host
+    // check duplicates in case of double request sent
+    const duplicates = await prisma.survey.findFirst({
+      where: {
+        title: {
+          equals: title,
+          mode: "insensitive", // 🍏 Makes the check case-insensitive (e.g., "Mrt" matches "MRT")
+        },
+        created_by: id, // Ensures the scope is user-specific (different hosts can use the same title)
+      },
+    });
+
+    if (duplicates) {
+      return res.status(400).json({
+        status: "error",
+        msg: "A survey with this title already exists in your account",
+      });
+    }
+
+    // Create if previous checks pass
     const survey = await prisma.survey.create({
       data: {
         title,
@@ -47,11 +66,10 @@ export const createSurvey = async (req, res) => {
   }
 };
 
-// 2. READ ALL SURVEYS CREATED BY THE LOGGED-IN HOST
 export const readAllSurveys = async (req, res) => {
   try {
-    const { id } = req.body;
-
+    // const { id } = req.body;
+    const id = req.decoded?.id || req.decoded?.uuid;
     // 1. Verify the user exists first
     const user = await prisma.user.findUnique({
       where: { uuid: id },
@@ -67,7 +85,7 @@ export const readAllSurveys = async (req, res) => {
     });
 
     return res.json({
-      status: "fetch successfully",
+      status: "ok",
       user: user.name,
       surveys: userSurveys,
     });
@@ -83,24 +101,37 @@ export const readAllSurveys = async (req, res) => {
   }
 };
 
-// 3. READ A SINGLE SURVEY BY ID
+// this would populate questions and options
 export const getSurveyById = async (req, res) => {
   try {
-    const { id } = req.body;
-    const { surveyId } = req.params;
+    // const { id } = req.body;
+    const surveyId = Number(req.params.surveyId);
+    const id = req.decoded?.id || req.decoded?.uuid;
 
     const user = await prisma.user.findUnique({ where: { uuid: id } });
     if (!user) return res.status(404).json({ msg: "user not found" });
 
     const survey = await prisma.survey.findUnique({
       where: { id: surveyId },
-      include: { questions: true }, // Includes nested survey questions if any exist
+      include: {
+        questions: {
+          orderBy: { id: "asc" }, // Keeps question rendering order stable
+        },
+      },
     });
 
     if (!survey)
       return res
         .status(404)
         .json({ status: "error", msg: "id does not exist" });
+
+    // Prevent regular USER from accessing an unpublished survey
+    if (!survey.is_published && user.role !== "HOST") {
+      return res.status(403).json({
+        status: "error",
+        msg: "Survey not yet published",
+      });
+    }
 
     return res.json({
       status: "ok",
@@ -113,32 +144,54 @@ export const getSurveyById = async (req, res) => {
   }
 };
 
-// UPDATE AN EXISTING SURVEY (With Strict Ownership Check)
 export const updateSurvey = async (req, res) => {
   try {
-    const { id, title, points_reward, is_published } = req.body;
-    const { surveyId } = req.params;
+    const { title, points_reward, is_published } = req.body;
+    const id = req.decoded?.id || req.decoded?.uuid;
+    const surveyId = Number(req.params.surveyId);
 
-    // 1. Verify the user exists
+    // Check if user exist
     const user = await prisma.user.findUnique({ where: { uuid: id } });
     if (!user) return res.status(404).json({ msg: "user not found" });
 
-    // 2. Find the survey
-    const existingSurvey = await prisma.survey.findUnique({
+    // Check if the survey exist
+    const check = await prisma.survey.findUnique({
       where: { id: surveyId },
     });
-    if (!existingSurvey)
-      return res.status(404).json({ msg: "entry not found" });
+    if (!check) return res.status(404).json({ msg: "entry not found" });
 
-    // 🛡️ 3. STRICT OWNERSHIP CHECK: Does this survey belong to the logged-in host?
-    if (existingSurvey.created_by !== id) {
+    // Check ownership
+    if (check.created_by !== id) {
       return res.status(403).json({
         status: "error",
         msg: "unauthorised: You do not own this survey",
       });
     }
 
-    // 4. Update the survey
+    // Check duplicates of title
+    if (title !== undefined && title.trim() !== "") {
+      const duplicate = await prisma.survey.findFirst({
+        where: {
+          title: {
+            equals: title,
+            mode: "insensitive", // Case-insensitive matching
+          },
+          created_by: id, // Scoped to this host's account only
+          NOT: {
+            id: surveyId, // Ignore this current survey row!
+          },
+        },
+      });
+
+      if (duplicate) {
+        return res.status(400).json({
+          status: "error",
+          msg: "A survey with this title already exists in your account",
+        });
+      }
+    }
+
+    // Update if previous checks all pass!
     const updateData = {};
     if (title !== undefined) updateData.title = title;
     if (points_reward !== undefined)
@@ -166,8 +219,9 @@ export const updateSurvey = async (req, res) => {
 // DELETE A SURVEY (With Strict Ownership Check)
 export const deleteSurvey = async (req, res) => {
   try {
-    const { id } = req.body;
-    const { surveyId } = req.params;
+    // const { id } = req.body;
+    const id = req.decoded?.id || req.decoded?.uuid;
+    const surveyId = Number(req.params.surveyId);
 
     // 1. Verify the user exists
     const user = await prisma.user.findUnique({ where: { uuid: id } });
@@ -232,7 +286,7 @@ export const readPublishedSurveys = async (req, res) => {
     });
 
     return res.json({
-      status: "fetch successfully",
+      status: "ok",
       count: publishedSurveys.length,
       surveys: publishedSurveys,
     });

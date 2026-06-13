@@ -12,6 +12,7 @@ import {
 import surveys from "./src/routers/surveys.js";
 import users from "./src/routers/users.js";
 import seed from "./src/routers/seed.js";
+import questions from "./src/routers/questions.js";
 // import appts from "./src/routers/appts.js";
 // import roles from "./src/routers/roles.js";
 // import auth from "./src/routers/auth.js";
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 app.use("/users", users);
 app.use("/seed", seed);
 app.use("/surveys", surveys);
+app.use("/questions", questions);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
