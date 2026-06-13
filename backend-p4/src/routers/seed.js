@@ -1,6 +1,6 @@
 import express from "express";
 import { seedDatabase } from "../controllers/seed.js";
-import { auth, authAdmin } from "../middlewares/users.js";
+import { authAdmin } from "../middlewares/users.js";
 
 const router = express.Router();
 
