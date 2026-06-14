@@ -37,3 +37,22 @@
 
 - Either install dependencies one by one using npm i <dependency-name> or install all dependencies at once using npm i
 - If you have a package.json file with all dependencies listed.
+
+## Angular (Road to Angular App Setup Guide)
+
+### Prequisites (Ask Copilot to do the scaffolding for you)
+
+### Install Angular CLI globally
+
+```bash
+npm install -g @angular/cli
+ng version
+```
+
+### Test API service
+
+1. Generate API service
+
+```bash
+ng generate service services/api
+```

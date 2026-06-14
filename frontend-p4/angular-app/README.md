@@ -1,27 +1,69 @@
-# AngularApp
+# Angular App Setup Guide
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+This project was scaffolded with Angular CLI 17.3.17. The steps below show the normal setup flow a person would use from a fresh start.
 
-## Development server
+## 1) Create the app scaffold
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Install the Angular CLI if you do not already have it:
 
-## Code scaffolding
+```bash
+npm install -g @angular/cli
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Create the project with routing enabled and CSS styling:
 
-## Build
+```bash
+ng new angular-app --routing --style=css
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+When prompted, choose the default answers unless you specifically want Server-Side Rendering or analytics.
 
-## Running unit tests
+## 2) Move into the project folder
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+cd angular-app
+```
 
-## Running end-to-end tests
+## 3) Install dependencies
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+If the scaffold was created with `--skip-install`, run:
 
-## Further help
+```bash
+npm install
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## 4) Start the development server
+
+```bash
+npm start
+```
+
+Then open `http://localhost:4200/` in your browser.
+
+## 5) Replace the starter page
+
+The default Angular welcome screen is only a starter template. A normal next step is to replace the default `app.component.html` content with your own layout and then add components as needed.
+
+## 6) Generate app pieces as you build
+
+Use the Angular CLI to create new features:
+
+```bash
+ng generate component features/home
+ng generate service services/api
+ng generate guard guards/auth
+ng generate pipe pipes/date-format
+```
+
+## 7) Build and test
+
+```bash
+npm run build
+npm test
+```
+
+## Notes
+
+- `npm audit` warnings are common during scaffolding and often come from nested dependencies.
+- If you want a cleaner install later, run `npm audit --omit=dev` to focus on production-only packages.
+- The files created by Angular CLI are the standard starting point for a new Angular app.
