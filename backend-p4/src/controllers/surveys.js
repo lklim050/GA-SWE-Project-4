@@ -256,9 +256,9 @@ export const deleteSurvey = async (req, res) => {
 // READ ALL PUBLISHED SURVEYS (Accessible by everyone to view/answer)
 export const readPublishedSurveys = async (req, res) => {
   try {
-    const { id } = req.body;
+    const id = req.decoded?.id || req.decoded?.uuid;
 
-    // 1. Verify the user exists first
+    // Verify the user exists first
     const user = await prisma.user.findUnique({
       where: { uuid: id },
     });

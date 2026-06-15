@@ -13,12 +13,17 @@
       <div class="survey-card" *ngFor="let survey of surveys">
         <div class="card-header">
           <h2>{{ survey.title }}</h2>
+          <p class="creator-name">by {{ survey.creator.name }}</p>
         </div>
         <div class="card-body">
-          <span class="points-badge"> {{ survey.points_reward }} points </span>
+          <span class="points-badge">
+            🏆 {{ survey.points_reward }} points
+          </span>
         </div>
         <div class="card-footer">
-          <button class="btn-primary">Take Survey</button>
+          <button class="btn-primary" (click)="onTakeSurvey(survey.id)">
+            Take Survey
+          </button>
         </div>
       </div>
     </div>

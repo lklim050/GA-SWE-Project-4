@@ -1,13 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { Router } from '@angular/router';
 
 interface Survey {
   id: number;
   title: string;
   points_reward: number;
-  is_published: boolean;
-  created_by: string;
+  creator: {
+    name: string;
+    // ↑ New field from /surveys/public response
+    //   replaces created_by uuid which isn't useful for display
+  };
 }
 
 @Component({
@@ -24,12 +28,15 @@ export class HomeComponent implements OnInit {
 
   errorMessage = '';
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.apiService.getSurveys().subscribe({
-      next: (data: Survey[]) => {
-        this.surveys = data;
+      next: (res: any) => {
+        this.surveys = res.surveys;
         this.isLoading = false;
       },
       error: (err) => {
@@ -38,5 +45,8 @@ export class HomeComponent implements OnInit {
         console.error('API error: ', err);
       },
     });
+  }
+  onTakeSurvey(surveyId: number) {
+    this.router.navigate(['/survey', surveyId]);
   }
 }

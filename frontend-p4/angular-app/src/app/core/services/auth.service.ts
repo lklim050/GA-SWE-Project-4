@@ -93,7 +93,8 @@ export class AuthService {
   }
 
   // ── Private Helpers ───────────────────────────────────
-  private setUser(user: AuthUser) {
+  // setUser was changed from private to public
+  public setUser(user: AuthUser) {
     localStorage.setItem('some_user', JSON.stringify(user));
     this.currentUserSubject.next(user);
   }
