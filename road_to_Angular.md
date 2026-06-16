@@ -957,6 +957,16 @@ public setUser(user: AuthUser) {
 }
 ```
 
+### Build Host Dashboard
+
+1. Generate Host Dashboard Component
+
+```bash
+ng generate component features/host/dashboard
+ng generate component features/host/create-survey
+ng generate component features/host/manage-questions
+```
+
 ## Notes/Annotation
 
 ### Import
