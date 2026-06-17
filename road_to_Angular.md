@@ -1364,7 +1364,7 @@ export class ManageQuestionsComponent implements OnInit {
 
     const { question_text, type } = this.addForm.value;
     const optionsValue = type === 'TEXT'
-      ? null
+      ? undefined
       : this.options.controls.map(c => c.value);
     // ↑ TEXT questions have no options — send null
     //   All other types send the options array
