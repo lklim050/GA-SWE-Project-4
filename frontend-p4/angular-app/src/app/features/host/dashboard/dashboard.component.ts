@@ -82,4 +82,8 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
+
+  viewResults(surveyId: number) {
+    this.router.navigate(['/host/results', surveyId]);
+  }
 }
