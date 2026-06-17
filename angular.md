@@ -102,5 +102,3 @@ Summary of key changes made when converting the original React/Vite `package.jso
 - **Architecture implications**:
   - Routing, state, and data fetching move from React idioms (React Router, hooks, react-query) to Angular idioms (Angular Router, services + RxJS, Angular DI, optionally NgRx).
   - Tooling and config (build, linting, TypeScript setup, environment files) are now managed by Angular CLI and Angular ESLint schematics.
-
-If you'd like, I can also generate a compact diff patch file showing removed vs added package.json entries, or commit the Angular scaffold into `frontend-p4/angular-app` now.

@@ -62,19 +62,27 @@
           *ngIf="!survey.is_published"
           class="btn-toggle"
           (click)="togglePublish(survey)"
-          [disabled]="togglingId === survey.id"
+          [disabled]="isPublishing"
         >
-          {{ togglingId === survey.id ? "..." : "Publish" }}
+          {{ isPublishing ? "..." : "Publish" }}
         </button>
 
         <!-- Show a static label instead when already published -->
         <span *ngIf="survey.is_published" class="published-lock">
-          🔒 Lock
+          🔒 Publish
         </span>
 
-        <button class="btn-danger" (click)="deleteSurvey(survey)">
+        <button
+          *ngIf="!survey.is_published"
+          class="btn-danger"
+          (click)="deleteSurvey(survey)"
+        >
           Delete
         </button>
+
+        <span *ngIf="survey.is_published" class="published-lock">
+          🔒 Delete
+        </span>
       </div>
     </div>
   </div>

@@ -22,7 +22,8 @@ export class DashboardComponent implements OnInit {
   surveys: HostSurvey[] = [];
   isLoading = true;
   errorMessage = '';
-  togglingId: number | null = null;
+  // togglingId: number | null = null;
+  isPublishing = false;
 
   constructor(
     private apiService: ApiService,
@@ -50,7 +51,8 @@ export class DashboardComponent implements OnInit {
   togglePublish(survey: HostSurvey) {
     if (survey.is_published) return;
     if (!confirm(`Publish "${survey.title}"? Action cannot be undone.`)) return;
-    this.togglingId = survey.id;
+    // this.togglingId = survey.id;
+    this.isPublishing = true;
     this.apiService
       .updateSurvey(survey.id, {
         is_published: true, // cannot be undone
@@ -58,10 +60,12 @@ export class DashboardComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           survey.is_published = true;
-          this.togglingId = null;
+          // this.togglingId = null;
+          this.isPublishing = false;
         },
         error: (err) => {
           this.errorMessage = err.error?.msg || 'Failed to update survey';
+          this.isPublishing = false;
         },
       });
   }
@@ -71,6 +75,7 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteSurvey(survey: HostSurvey) {
+    if (survey.is_published) return;
     if (!confirm(`Delete "${survey.title}"? Action cannot be undone.`)) return;
 
     this.apiService.deleteSurvey(survey.id).subscribe({
