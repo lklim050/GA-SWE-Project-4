@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface AuthUser {
   uuid: string;
@@ -16,7 +17,7 @@ export interface AuthUser {
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:5001/users';
+  private baseUrl = `${environment.apiUrl}/users`;
 
   private currentUserSubject = new BehaviorSubject<AuthUser | null>(
     this.loadFromStorage(),

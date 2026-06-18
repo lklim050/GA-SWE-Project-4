@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Question {
   id: number;
@@ -36,29 +37,40 @@ export interface SurveyResponse {
   status: string;
 }
 
+export interface MessageResponse {
+  status: string;
+  msg: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:5001';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  getSurveys(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/surveys/public`);
+  getSurveys(): Observable<SurveyDetail[]> {
+    return this.http.get<SurveyDetail[]>(`${this.baseUrl}/surveys/public`);
   }
-  getSurveyDetail(surveyId: number): Observable<any> {
-    return this.http.post(`${this.baseUrl}/surveys/${surveyId}`, {});
+  getSurveyDetail(surveyId: number): Observable<SurveyDetail> {
+    return this.http.post<SurveyDetail>(
+      `${this.baseUrl}/surveys/${surveyId}`,
+      {},
+    );
   }
-  submitSurvey(payload: SubmitPayload): Observable<any> {
-    return this.http.put(`${this.baseUrl}/responses/submit`, payload);
+  submitSurvey(payload: SubmitPayload): Observable<SurveyResponse> {
+    return this.http.put<SurveyResponse>(
+      `${this.baseUrl}/responses/submit`,
+      payload,
+    );
   }
-  getHostSurveys(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/surveys`);
+  getHostSurveys(): Observable<SurveyDetail[]> {
+    return this.http.get<SurveyDetail[]>(`${this.baseUrl}/surveys`);
   }
 
-  createSurvey(title: string, pointsReward: number): Observable<any> {
-    return this.http.put(`${this.baseUrl}/surveys`, {
+  createSurvey(title: string, pointsReward: number): Observable<SurveyDetail> {
+    return this.http.put<SurveyDetail>(`${this.baseUrl}/surveys`, {
       title,
       points_reward: pointsReward,
       is_published: false,
@@ -71,19 +83,26 @@ export class ApiService {
       points_reward: number;
       is_published: boolean;
     }>,
-  ): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/surveys/${surveyId}`, data);
+  ): Observable<SurveyDetail> {
+    return this.http.patch<SurveyDetail>(
+      `${this.baseUrl}/surveys/${surveyId}`,
+      data,
+    );
   }
-  deleteSurvey(surveyId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/surveys/${surveyId}`);
+  deleteSurvey(surveyId: number): Observable<MessageResponse> {
+    return this.http.delete<MessageResponse>(
+      `${this.baseUrl}/surveys/${surveyId}`,
+    );
   }
 
   getSurveyResults(surveyId: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/surveys/${surveyId}/results`);
   }
 
-  getQuestions(surveyId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/questions/survey/${surveyId}`);
+  getQuestions(surveyId: number): Observable<Question> {
+    return this.http.get<Question>(
+      `${this.baseUrl}/questions/survey/${surveyId}`,
+    );
   }
 
   createQuestion(
@@ -91,27 +110,19 @@ export class ApiService {
     questionText: string,
     type: string,
     options?: string[],
-  ): Observable<any> {
-    return this.http.put(`${this.baseUrl}/questions`, {
+  ): Observable<Question> {
+    return this.http.put<Question>(`${this.baseUrl}/questions`, {
       survey_id: surveyId,
       question_text: questionText,
       type,
       options: options || null,
     });
   }
-  deleteQuestion(questionId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/questions/${questionId}`);
+  deleteQuestion(questionId: number): Observable<MessageResponse> {
+    return this.http.delete<MessageResponse>(
+      `${this.baseUrl}/questions/${questionId}`,
+    );
   }
-  // updateQuestion(
-  //   questionId: number,
-  //   data: Partial<{
-  //     question_text?: string;
-  //     type?: string;
-  //     options?: string[];
-  //   }>,
-  // ): Observable<any> {
-  //   return this.http.patch(`${this.baseUrl}/questions/${questionId}`, data);
-  // }
 
   updateQuestion(
     questionId: number,
@@ -120,7 +131,10 @@ export class ApiService {
       type?: string;
       options?: string[];
     },
-  ): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/questions/${questionId}`, data);
+  ): Observable<Question> {
+    return this.http.patch<Question>(
+      `${this.baseUrl}/questions/${questionId}`,
+      data,
+    );
   }
 }
