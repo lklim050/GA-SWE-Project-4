@@ -36,7 +36,7 @@ export const seedDatabase = async (req, res) => {
         {
           uuid: "u1111111-1111-1111-1111-111111111111",
           email: "user1@gmail.com",
-          name: "Charles Tan",
+          name: "Charles Chan",
           password: hashedPassword,
           role: "USER",
           points_bal: 80,
@@ -72,6 +72,38 @@ export const seedDatabase = async (req, res) => {
           password: hashedPassword,
           role: "USER",
           points_bal: 80,
+        },
+        {
+          uuid: "u6666666-6666-6666-6666-666666666666",
+          email: "user6@gmail.com",
+          name: "AhGao Ang",
+          password: hashedPassword,
+          role: "USER",
+          points_bal: 30,
+        },
+        {
+          uuid: "u7777777-7777-7777-7777-777777777777",
+          email: "user7@gmail.com",
+          name: "MaBao Tan",
+          password: hashedPassword,
+          role: "USER",
+          points_bal: 30,
+        },
+        {
+          uuid: "u8888888-8888-8888-8888-888888888888",
+          email: "user8@gmail.com",
+          name: "Mohammed Bin Ahmed",
+          password: hashedPassword,
+          role: "USER",
+          points_bal: 30,
+        },
+        {
+          uuid: "u9999999-9999-9999-9999-999999999999",
+          email: "user9@gmail.com",
+          name: "Muthu Salem S/O Sathu Malem",
+          password: hashedPassword,
+          role: "USER",
+          points_bal: 30,
         },
       ],
     });
@@ -306,7 +338,7 @@ export const seedDatabase = async (req, res) => {
           status: "completed",
           answers_payload: [
             { question_id: 1, answer: "East-West Line" },
-            { question_id: 2, answer: "Comfortable" },
+            { question_id: 2, answer: "Too Warm" },
             {
               question_id: 3,
               answer: ["Grab Poles", "Dynamic Route Map Display"],
@@ -363,7 +395,7 @@ export const seedDatabase = async (req, res) => {
           status: "completed",
           answers_payload: [
             { question_id: 1, answer: "Circle Line" },
-            { question_id: 2, answer: "Comfortable" },
+            { question_id: 2, answer: "Too Warm" },
             { question_id: 3, answer: ["Dynamic Route Map Display"] },
             { question_id: 4, answer: "No suggestions, great service." },
           ],
@@ -424,7 +456,7 @@ export const seedDatabase = async (req, res) => {
           status: "completed",
           answers_payload: [
             { question_id: 1, answer: "East-West Line" },
-            { question_id: 2, answer: "Comfortable" },
+            { question_id: 2, answer: "Too Warm" },
             {
               question_id: 3,
               answer: [
@@ -455,6 +487,79 @@ export const seedDatabase = async (req, res) => {
               question_id: 8,
               answer:
                 "The queue layout marshals do a solid job keeping paths flowing.",
+            },
+          ],
+        },
+        {
+          user_id: "u6666666-6666-6666-6666-666666666666",
+          survey_id: 1,
+          status: "completed",
+          answers_payload: [
+            { question_id: 1, answer: "East-West Line" },
+            { question_id: 2, answer: "Too Warm" },
+            {
+              question_id: 3,
+              answer: [
+                "Grab Poles",
+                "Overhead Handles",
+                "Dynamic Route Map Display",
+              ],
+            },
+            {
+              question_id: 4,
+              answer:
+                "If possible, blast the aircon bigger because afternoon really very hot.",
+            },
+          ],
+        },
+        {
+          user_id: "u7777777-7777-7777-7777-777777777777",
+          survey_id: 1,
+          status: "completed",
+          answers_payload: [
+            { question_id: 1, answer: "East-West Line" },
+            { question_id: 2, answer: "Too Warm" },
+            {
+              question_id: 3,
+              answer: ["Grab Poles", "Dynamic Route Map Display"],
+            },
+            {
+              question_id: 4,
+              answer: "我跟你讲啊，天气真的太热了, aircon 能不能开大大",
+            },
+          ],
+        },
+        {
+          user_id: "u8888888-8888-8888-8888-888888888888",
+          survey_id: 1,
+          status: "completed",
+          answers_payload: [
+            { question_id: 1, answer: "East-West Line" },
+            { question_id: 2, answer: "Too Warm" },
+            {
+              question_id: 3,
+              answer: ["Grab Poles", "Dynamic Route Map Display"],
+            },
+            {
+              question_id: 4,
+              answer: "Cuaca terlalu panas, perlu lebih airkon",
+            },
+          ],
+        },
+        {
+          user_id: "u9999999-9999-9999-9999-999999999999",
+          survey_id: 1,
+          status: "completed",
+          answers_payload: [
+            { question_id: 1, answer: "Circle Line" },
+            { question_id: 2, answer: "Too Warm" },
+            {
+              question_id: 3,
+              answer: ["Grab Poles", "Dynamic Route Map Display"],
+            },
+            {
+              question_id: 4,
+              answer: "Vaanilai romba sooda irukku, innum AC thevai.",
             },
           ],
         },
