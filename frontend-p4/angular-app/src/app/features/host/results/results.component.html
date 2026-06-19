@@ -13,6 +13,10 @@
           <span class="stat-number">{{ questionEntries.length }}</span>
           <span class="stat-label">Questions</span>
         </div>
+        <div class="stat-card clickable" (click)="generateInsight()">
+          <span class="stat-icon">🤖</span>
+          <span class="stat-label">Generate Insight</span>
+        </div>
       </div>
     </div>
   </div>
@@ -95,3 +99,12 @@
     </div>
   </div>
 </div>
+
+<app-insight-modal
+  [isVisible]="showInsightModal"
+  [summary]="insightSummary"
+  [submissionCount]="insightSubmissionCount"
+  [generatedAt]="insightGeneratedAt"
+  [isLoading]="isInsightLoading"
+  (close)="closeInsightModal()"
+></app-insight-modal>

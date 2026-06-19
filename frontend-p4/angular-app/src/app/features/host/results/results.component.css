@@ -207,3 +207,34 @@
   font-size: 0.9rem;
   margin-bottom: 16px;
 }
+
+.insight-card {
+  background: #f8f9ff;
+  border: 1.5px solid #c7d2fe;
+  border-radius: 12px;
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+}
+
+.btn-insight {
+  margin: auto;
+}
+
+.stat-card.clickable {
+  cursor: pointer;
+  transition: all 0.2s;
+  border-color: #4f46e5;
+}
+
+.stat-card.clickable:hover {
+  background: #eef2ff;
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}

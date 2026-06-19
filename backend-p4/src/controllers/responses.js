@@ -224,12 +224,14 @@ export const getSurveyInsights = async (req, res) => {
     });
 
     const lastCount = existingInsight ? existingInsight.submission_count : 0;
+    const aiModel = "gemini-3.1-flash-lite";
     const getInsight = !existingInsight || totalSubmissions > lastCount + 5;
 
     if (!getInsight)
       return res.status(200).json({
         status: "ok",
         msg: "no need to refresh, will fetch previous Insight",
+        aiModel: aiModel,
         insights: existingInsight,
         last_created_at: existingInsight.createdAt,
       });
@@ -242,14 +244,14 @@ export const getSurveyInsights = async (req, res) => {
       JSON: ${JSON.stringify(resultsSummary)}
     `;
 
-    const aiModel = "gemini-3.1-flash-lite";
-
     const result = await ai.models.generateContent({
       model: aiModel, // Alternative to try
       contents: prompt,
     });
 
     const insight = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    const newAiModel = result?.modelVersion;
 
     if (!insight) {
       throw new Error("AI returned an empty response");
@@ -270,7 +272,8 @@ export const getSurveyInsights = async (req, res) => {
 
     return res.status(200).json({
       status: "ok",
-      source: aiModel,
+      msg: `Fetch data successfully using AI model ${newAiModel}`,
+      aiModel: newAiModel,
       insights: updatedInsight,
       last_created_at: updatedInsight.createdAt,
     });

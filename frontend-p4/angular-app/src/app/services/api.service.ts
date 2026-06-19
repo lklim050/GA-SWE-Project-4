@@ -42,6 +42,22 @@ export interface MessageResponse {
   msg: string;
 }
 
+export interface InsightsResponse {
+  status: string;
+  msg: string;
+  aiModel: string;
+  insights: SurveyInsights;
+  last_created_at: string;
+}
+
+export interface SurveyInsights {
+  id: number;
+  survey_id: number;
+  summary: string;
+  submission_count: number;
+  createAt: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -135,6 +151,13 @@ export class ApiService {
     return this.http.patch<Question>(
       `${this.baseUrl}/questions/${questionId}`,
       data,
+    );
+  }
+
+  getSurveyInsights(surveyId: number): Observable<SurveyInsights> {
+    return this.http.post<SurveyInsights>(
+      `${this.baseUrl}/surveys/${surveyId}/insights`,
+      {},
     );
   }
 }

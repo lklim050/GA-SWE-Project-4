@@ -1,0 +1,43 @@
+<div class="modal-backdrop" *ngIf="isVisible" (click)="onClose()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title-row">
+        <span class="modal-icon">🤖</span>
+        <h2>AI Survey Insights</h2>
+      </div>
+      <button clas="btn-close" (click)="onClose()">X</button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Generating insights</p>
+      <p class="loading-sub">AI is analysing your survey responses</p>
+    </div>
+
+    <div *ngIf="!isLoading" class="modal-content">
+      <div class="insight-meta">
+        <span class="meta-item">
+          📊 Based on {{ submissionCount }} submissions
+        </span>
+        <span class="meta-item" *ngIf="generatedAt">
+          🕐 {{ generatedAt | date: "dd MMM yyyy, HH:mm" }}
+        </span>
+      </div>
+
+      <div class="summary-body">
+        <p
+          *ngFor="let paragraph of getParagraphs(summary)"
+          class="summary-paragraph"
+          [class.section-header]="
+            paragraph.startsWith('#') || paragraph.endsWith(':')
+          "
+        >
+          {{ paragraph }}
+        </p>
+      </div>
+    </div>
+    <div class="modal-footer" *ngIf="!isLoading">
+      <button class="btn-close-footer" (click)="onClose()">Close</button>
+    </div>
+  </div>
+</div>

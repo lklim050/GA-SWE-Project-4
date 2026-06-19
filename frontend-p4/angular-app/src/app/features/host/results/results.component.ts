@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../../../services/api.service';
+import { ApiService, InsightsResponse } from '../../../services/api.service';
+import { ModalService } from '../../../core/services/modal.service';
+import { InsightModalComponent } from '../../../shared/components/insight-modal/insight-modal.component';
 
 interface QuestionResult {
   question_text: string;
@@ -20,7 +22,7 @@ interface SurveyResults {
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, InsightModalComponent],
   templateUrl: './results.component.html',
   styleUrl: './results.component.css',
 })
@@ -32,10 +34,18 @@ export class ResultsComponent implements OnInit {
 
   questionEntries: { id: string; result: QuestionResult }[] = []; // convert object into array for ngFor iteration.
 
+  // all these to pass down to Modal (Child)
+  showInsightModal = false;
+  insightSummary = '';
+  insightSubmissionCount = 0;
+  insightGeneratedAt = '';
+  isInsightLoading = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private apiService: ApiService,
+    private modalService: ModalService,
   ) {}
 
   ngOnInit() {
@@ -76,6 +86,31 @@ export class ResultsComponent implements OnInit {
 
   isChoiceType(type: string): boolean {
     return ['RADIO', 'CHECKBOX', 'SELECT'].includes(type);
+  }
+
+  generateInsight() {
+    console.log('generateInsight called');
+    this.showInsightModal = true;
+    console.log('showInsightModal:', this.showInsightModal);
+    this.isInsightLoading = true;
+    this.apiService.getSurveyInsights(this.surveyId).subscribe({
+      next: (res: any) => {
+        this.insightSummary = res.insights.summary;
+        this.insightSubmissionCount = res.insights.submission_count;
+        this.insightGeneratedAt = res.insights.last_created_at;
+        this.isInsightLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage =
+          err.error?.msg ||
+          'Failed to generate insights, please try again later';
+        this.isInsightLoading = false;
+      },
+    });
+  }
+
+  closeInsightModal() {
+    this.showInsightModal = false;
   }
 
   goBack() {
