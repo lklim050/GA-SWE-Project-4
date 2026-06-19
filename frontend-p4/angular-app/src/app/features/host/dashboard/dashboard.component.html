@@ -56,9 +56,19 @@
           View Results
         </button>
 
-        <button class="btn-outline" (click)="manageQuestions(survey.id)">
+        <button
+          *ngIf="!survey.is_published"
+          class="btn-outline"
+          (click)="manageQuestions(survey.id)"
+          [disabled]="isPublishing"
+        >
           Questions
         </button>
+
+        <!-- Show a static label instead when already published -->
+        <span *ngIf="survey.is_published" class="published-lock">
+          🔒 Questions
+        </span>
 
         <button
           *ngIf="!survey.is_published"

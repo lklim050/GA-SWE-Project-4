@@ -178,7 +178,7 @@ export const getSurveyResults = async (req, res) => {
     // Return the processed aggregated results here
     return res.json({
       status: "ok",
-      survey_title: survey.title,
+      survey_title: hostVerify.survey?.title,
       total_submissions: totalSubmissions,
       results: resultsSummary,
     });
