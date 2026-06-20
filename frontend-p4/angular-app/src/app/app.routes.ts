@@ -9,6 +9,7 @@ import { CreateSurveyComponent } from './features/host/create-survey/create-surv
 import { DashboardComponent } from './features/host/dashboard/dashboard.component';
 import { ManageQuestionsComponent } from './features/host/manage-questions/manage-questions.component';
 import { ResultsComponent } from './features/host/results/results.component';
+import { ProfileComponent } from './features/profile/profile.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -38,6 +39,11 @@ export const routes: Routes = [
     path: 'host/results/:surveyId',
     component: ResultsComponent,
     canActivate: [authGuard, hostGuard],
+  },
+  {
+    path: 'user/profile',
+    component: ProfileComponent,
+    canActivate: [authGuard],
   },
   { path: '**', redirectTo: '' },
 ];

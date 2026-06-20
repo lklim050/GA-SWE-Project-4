@@ -28,6 +28,13 @@
         Dashboard
       </a>
 
+      <a
+        *ngIf="currentUser.role === 'USER' || currentUser.role === 'ADMIN'"
+        routerLink="/user/profile"
+        class="nav-link"
+        >My Profile</a
+      >
+
       <!-- Logout -->
       <button class="btn-logout" (click)="logout()">Sign Out</button>
     </div>

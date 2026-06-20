@@ -1,1 +1,114 @@
-<p>profile works!</p>
+<div class="profile-wrapper">
+  <div *ngIf="isLoading" class="state-box">Loading profile</div>
+
+  <div *ngIf="!isLoading && currentUser">
+    <div class="profile-header">
+      <div class="avatar">
+        {{ currentUser.name[0].toUpperCase() }}
+      </div>
+      <div class="user-name">
+        {{ currentUser.name.toUpperCase() }}
+        <span class="role-badge" [class.host]="currentUser.role === 'HOST'">
+          {{ currentUser.role }}
+        </span>
+      </div>
+      <div class="profile-info">
+        <p>{{ currentUser.email }}</p>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-number">⭐ {{ points }}</span>
+        <span class="stat-label">Total Points</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" [style.color]="currentTier.color">
+          {{ currentTier.label }}
+        </span>
+        <span class="stat-label">Current Tier</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">{{ surveysCompleted }}</span>
+        <span class="stat-label">Surveys Completed</span>
+      </div>
+    </div>
+    <!-- Tier Progress Card -->
+    <div class="tier-card">
+      <div class="tier-header">
+        <h2>Tier Progress</h2>
+        <span
+          class="tier-badge"
+          [style.color]="currentTier.color"
+          [style.background]="currentTier.bgColor"
+        >
+          {{ currentTier.label }}
+        </span>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-section">
+        <div class="progress-labels">
+          <span>{{ currentTier.name }}</span>
+          <span *ngIf="nextTier">{{ nextTier.name }}</span>
+          <span *ngIf="!nextTier">Max Tier Reached! 🎉</span>
+        </div>
+        <div class="progress-track">
+          <div
+            class="progress-fill"
+            [style.width.%]="progressToNextTier"
+            [style.background]="currentTier.color"
+          ></div>
+        </div>
+        <p class="progress-text" *ngIf="nextTier">
+          <strong>{{ pointsToNextTier }} pts</strong> needed to reach
+          {{ nextTier.label }}
+        </p>
+        <p class="progress-text" *ngIf="!nextTier">
+          You've reached the highest tier! 🏆
+        </p>
+      </div>
+
+      <!-- All Tiers Overview -->
+      <div class="tiers-overview">
+        <h3>All Tiers</h3>
+        <div class="tiers-list">
+          <div
+            *ngFor="let tier of tiers"
+            class="tier-column"
+            [class.active]="tier.name === currentTier.name"
+          >
+            <!-- ↑ Highlights the user's current tier -->
+            <span class="tier-name" [style.color]="tier.color">
+              {{ tier.label }}
+            </span>
+            <span class="tier-threshold">
+              {{
+                tier.maxPoints === 1 / 0
+                  ? tier.minPoints + "+ pts"
+                  : tier.minPoints + " – " + tier.maxPoints + " pts"
+              }}
+              <!-- ↑ 1/0 = Infinity in templates
+                      Shows "700+ pts" for Platinum
+                      Shows "0 – 100 pts" for others -->
+            </span>
+            <span class="tier-check" *ngIf="points >= tier.minPoints"> ✓ </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="actions-row">
+      <a routerLink="/" class="btn-primary"> Browse Surveys </a>
+
+      <!-- <a
+      *ngIf="currentUser.role === 'HOST'"
+      routerLink="/host"
+      class="btn-outline"
+    >
+      Host Dashboard
+    </a> -->
+    </div>
+  </div>
+</div>
