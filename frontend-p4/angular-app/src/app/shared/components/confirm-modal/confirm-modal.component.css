@@ -10,6 +10,16 @@
   z-index: 1000;
   /* ↑ High z-index ensures modal appears above everything
        including the sticky navbar (z-index: 100) */
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-box {
@@ -21,4 +31,88 @@
   text-align: center;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+}
+
+.modal-message {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-cancel {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.2s;
+  min-width: 100px;
+}
+
+.btn-cancel:hover {
+  border-color: #999;
+  color: #333;
+}
+
+.btn-confirm {
+  padding: 10px 24px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  min-width: 100px;
+}
+
+.btn-confirm:hover {
+  background: #4338ca;
+}
+
+.btn-confirm.danger {
+  background: #dc2626;
+  /* ↑ Red for destructive actions like Delete */
+}
+
+.btn-confirm.danger:hover {
+  background: #b91c1c;
+}
+
+.modal-icon.danger {
+  filter: hue-rotate(0deg);
+  /* Just let the emoji show naturally */
 }

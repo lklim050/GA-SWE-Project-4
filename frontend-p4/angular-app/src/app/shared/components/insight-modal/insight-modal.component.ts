@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
   selector: 'app-insight-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MarkdownModule],
   templateUrl: './insight-modal.component.html',
   styleUrl: './insight-modal.component.css',
 })
@@ -25,17 +26,17 @@ export class InsightModalComponent {
     this.close.emit();
   }
 
-  formatSummary(text: string): string {
-    return text
-      .replace(/### /g, '')
-      .replace(/## /g, '')
-      .replace(/\*\*(.*?)\*\*/g, '$1')
-      .replace(/\\n/g, '\n');
-  }
-  getParagraphs(text: string): string[] {
-    return this.formatSummary(text)
-      .split('\n')
-      .filter((line) => line.trim().length > 0);
-    // ↑ Split by newline, remove empty lines
-  }
+  // formatSummary(text: string): string {
+  //   return text
+  //     .replace(/### /g, '')
+  //     .replace(/## /g, '')
+  //     .replace(/\*\*(.*?)\*\*/g, '$1')
+  //     .replace(/\\n/g, '\n');
+  // }
+  // getParagraphs(text: string): string[] {
+  //   return this.formatSummary(text)
+  //     .split('\n')
+  //     .filter((line) => line.trim().length > 0);
+  //   // ↑ Split by newline, remove empty lines
+  // }
 }

@@ -26,15 +26,7 @@
       </div>
 
       <div class="summary-body">
-        <p
-          *ngFor="let paragraph of getParagraphs(summary)"
-          class="summary-paragraph"
-          [class.section-header]="
-            paragraph.startsWith('#') || paragraph.endsWith(':')
-          "
-        >
-          {{ paragraph }}
-        </p>
+        <markdown [data]="summary" class="markdown-content"></markdown>
       </div>
     </div>
     <div class="modal-footer" *ngIf="!isLoading">
