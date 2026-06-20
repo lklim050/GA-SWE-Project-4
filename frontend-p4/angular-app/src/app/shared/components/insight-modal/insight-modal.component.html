@@ -3,7 +3,7 @@
     <div class="modal-header">
       <div class="modal-title-row">
         <span class="modal-icon">🤖</span>
-        <h2>AI Survey Insights</h2>
+        <h2>AI Survey Insights ({{ aiModel }})</h2>
       </div>
       <button clas="btn-close" (click)="onClose()">X</button>
     </div>
@@ -22,6 +22,7 @@
         <span class="meta-item" *ngIf="generatedAt">
           🕐 {{ generatedAt | date: "dd MMM yyyy, HH:mm" }}
         </span>
+        <span class="meta-item"> Note: {{ insightMsg }} </span>
       </div>
 
       <div class="summary-body">

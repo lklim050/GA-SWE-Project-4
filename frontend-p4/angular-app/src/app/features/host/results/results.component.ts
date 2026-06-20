@@ -40,12 +40,13 @@ export class ResultsComponent implements OnInit {
   insightSubmissionCount = 0;
   insightGeneratedAt = '';
   isInsightLoading = false;
+  insightMsg = '';
+  aiModel = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private apiService: ApiService,
-    private modalService: ModalService,
   ) {}
 
   ngOnInit() {
@@ -94,11 +95,13 @@ export class ResultsComponent implements OnInit {
     console.log('showInsightModal:', this.showInsightModal);
     this.isInsightLoading = true;
     this.apiService.getSurveyInsights(this.surveyId).subscribe({
-      next: (res: any) => {
+      next: (res: InsightsResponse) => {
         this.insightSummary = res.insights.summary;
         this.insightSubmissionCount = res.insights.submission_count;
-        this.insightGeneratedAt = res.insights.last_created_at;
+        this.insightGeneratedAt = res.insights.createdAt;
         this.isInsightLoading = false;
+        this.insightMsg = res.msg;
+        this.aiModel = res.aiModel;
       },
       error: (err) => {
         this.errorMessage =

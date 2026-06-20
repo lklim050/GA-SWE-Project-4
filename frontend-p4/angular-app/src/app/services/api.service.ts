@@ -55,7 +55,7 @@ export interface SurveyInsights {
   survey_id: number;
   summary: string;
   submission_count: number;
-  createAt: string;
+  createdAt: string;
 }
 
 @Injectable({
@@ -154,8 +154,8 @@ export class ApiService {
     );
   }
 
-  getSurveyInsights(surveyId: number): Observable<SurveyInsights> {
-    return this.http.post<SurveyInsights>(
+  getSurveyInsights(surveyId: number): Observable<InsightsResponse> {
+    return this.http.post<InsightsResponse>(
       `${this.baseUrl}/surveys/${surveyId}/insights`,
       {},
     );

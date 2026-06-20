@@ -15,6 +15,8 @@ export class InsightModalComponent {
   @Input() submissionCount = 0;
   @Input() generatedAt = '';
   @Input() isLoading = false;
+  @Input() insightMsg = '';
+  @Input() aiModel = '';
   // @Output() means from child
   // void means no data passed back
   @Output() close = new EventEmitter<void>();

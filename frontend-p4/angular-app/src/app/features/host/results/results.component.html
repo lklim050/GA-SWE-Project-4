@@ -15,7 +15,7 @@
         </div>
         <div class="stat-card clickable" (click)="generateInsight()">
           <span class="stat-icon">🤖</span>
-          <span class="stat-label">Generate Insight</span>
+          <span class="stat-label">Press to generate Insight</span>
         </div>
       </div>
     </div>
@@ -106,5 +106,7 @@
   [submissionCount]="insightSubmissionCount"
   [generatedAt]="insightGeneratedAt"
   [isLoading]="isInsightLoading"
+  [insightMsg]="insightMsg"
+  [aiModel]="aiModel"
   (close)="closeInsightModal()"
 ></app-insight-modal>

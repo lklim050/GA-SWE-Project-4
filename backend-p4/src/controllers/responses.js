@@ -230,7 +230,7 @@ export const getSurveyInsights = async (req, res) => {
     if (!getInsight)
       return res.status(200).json({
         status: "ok",
-        msg: "no need to refresh, will fetch previous Insight",
+        msg: "Fetch previous Insight, will refresh when there are more responses received",
         aiModel: aiModel,
         insights: existingInsight,
         last_created_at: existingInsight.createdAt,
