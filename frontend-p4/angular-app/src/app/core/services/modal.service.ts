@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, take } from 'rxjs';
 
 export interface ModalConfig {
   title: String;
@@ -21,7 +21,11 @@ export class ModalService {
   confirm(config: ModalConfig): Observable<boolean> {
     this.openSubject.next(config);
 
-    return this.resultSubject.asObservable();
+    // Create a new Subject with each confirm call
+    this.resultSubject = new Subject<boolean>();
+
+    // take is rxjs which ensure completion after one result
+    return this.resultSubject.asObservable().pipe(take(1));
   }
   resolve(result: boolean) {
     this.resultSubject.next(result);

@@ -1,8 +1,8 @@
 import { body } from "express-validator";
 
 export const validateRegistrationData = [
-  body("username", "username is required").trim().notEmpty(),
-  body("username", "username has 10 to 50 characters").isLength({
+  body("email", "email is required").trim().notEmpty(),
+  body("name", "name has 10 to 50 characters").isLength({
     min: 10,
     max: 50,
   }),
@@ -14,6 +14,6 @@ export const validateRegistrationData = [
 ];
 
 export const validateLoginData = [
-  body("username", "username is required").exists().trim().notEmpty(),
+  body("email", "email is required").exists().trim().notEmpty(),
   body("password", "passowrd is required").exists().trim().notEmpty(),
 ];

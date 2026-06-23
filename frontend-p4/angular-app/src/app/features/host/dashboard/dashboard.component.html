@@ -39,7 +39,42 @@
         <h2>
           {{ survey.title }}
           <span class="survey-id-badge">#{{ survey.id }}</span>
+          <button
+            *ngIf="!survey.is_published"
+            class="btn-edit-title"
+            (click)="startEditTitle(survey)"
+            title="Edit title"
+          >
+            ✏️
+          </button>
         </h2>
+        <!-- Edit Title -->
+        <div *ngIf="editingTitleId === survey.id" class="title-edit-row">
+          <input
+            type="text"
+            [(ngModel)]="editTitleValue"
+            class="title-edit-input"
+            (keyup.enter)="saveTitle(survey)"
+            (keyup.escape)="cancelEditTitle()"
+            autofocus
+          />
+
+          <button
+            class="btn-confirm-edit"
+            (click)="saveTitle(survey)"
+            [disabled]="isSavingTitle"
+            title="Save"
+          >
+            ✓
+          </button>
+          <button
+            class="btn-cancel-edit"
+            (click)="cancelEditTitle()"
+            title="Cancel"
+          >
+            ✕
+          </button>
+        </div>
 
         <div class="survey-meta">
           <span class="points-badge">🏆 {{ survey.points_reward }} pts</span>
@@ -50,8 +85,6 @@
           >
             {{ survey.is_published ? "Published" : "Draft" }}
           </span>
-          <!-- ↑ [class.published] and [class.draft] conditionally
-                  apply CSS classes based on is_published value -->
         </div>
       </div>
 

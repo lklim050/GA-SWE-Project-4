@@ -55,7 +55,37 @@
           Password must be at least 6 characters
         </span>
       </div>
-
+      <!-- Confirm Password Field -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          formControlName="confirmPassword"
+          placeholder="Re-enter your password"
+          [class.invalid]="confirmPassword?.invalid && confirmPassword?.touched"
+        />
+        <span
+          class="error-text"
+          *ngIf="
+            confirmPassword?.errors?.['passwordMismatch'] &&
+            confirmPassword?.touched
+          "
+        >
+          Passwords do not match
+          <!-- ↑ ['passwordMismatch'] bracket notation needed
+            because Angular template can't use dot notation
+            for dynamic error keys -->
+        </span>
+        <span
+          class="error-text"
+          *ngIf="
+            confirmPassword?.errors?.['required'] && confirmPassword?.touched
+          "
+        >
+          Please confirm your password
+        </span>
+      </div>
       <!-- Role Selection -->
       <div class="form-group">
         <label>I want to join as</label>

@@ -1,4 +1,4 @@
-import { body, params } from "express-validator";
+import { body, param } from "express-validator";
 
 // SURVEY SCHEMAS
 export const validateSurveyCreation = [
@@ -20,7 +20,9 @@ export const validateQuestionCreation = [
     "SELECT",
     "TEXT",
   ]),
-  body("options", "Options array is required").isArray(),
+  body("options", "Options array is required")
+    .if(body("type").not().equals("TEXT"))
+    .isArray(),
 ];
 
 export const validateQuestionIdParam = [

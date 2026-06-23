@@ -9,6 +9,7 @@ import { authHost } from "../middlewares/users.js";
 import {
   validateQuestionCreation,
   validateQuestionIdParam,
+  validateSurveyIdParam,
 } from "../validators/surveys.js";
 import checkError from "../validators/checkErrors.js";
 
@@ -18,7 +19,7 @@ router.put("/", authHost, validateQuestionCreation, checkError, createQuestion);
 router.get(
   "/survey/:surveyId",
   authHost,
-  validateQuestionIdParam,
+  validateSurveyIdParam,
   checkError,
   readQuestionsBySurveyId,
 );

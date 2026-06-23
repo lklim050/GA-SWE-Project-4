@@ -246,3 +246,78 @@
   font-size: 0.9rem;
   margin-bottom: 16px;
 }
+
+.btn-edit-title {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-left: 6px;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  padding: 2px;
+}
+
+.btn-edit-title:hover {
+  opacity: 1;
+}
+
+.title-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.title-edit-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1.5px solid #14b8a6;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  font-family: inherit;
+}
+
+.title-edit-input:focus {
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+}
+
+.btn-confirm-edit {
+  width: 32px;
+  height: 32px;
+  background: #dcfce7;
+  color: #16a34a;
+  border: 1.5px solid #86efac;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.btn-confirm-edit:hover:not(:disabled) {
+  background: #bbf7d0;
+}
+
+.btn-confirm-edit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-cancel-edit {
+  width: 32px;
+  height: 32px;
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1.5px solid #fecaca;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.btn-cancel-edit:hover {
+  background: #fee2e2;
+}

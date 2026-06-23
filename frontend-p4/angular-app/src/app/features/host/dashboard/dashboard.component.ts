@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { AuthService, AuthUser } from '../../../core/services/auth.service';
 import { ModalService } from '../../../core/services/modal.service';
+import { FormsModule } from '@angular/forms';
 
 interface HostSurvey {
   id: number;
@@ -15,7 +16,7 @@ interface HostSurvey {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -23,7 +24,11 @@ export class DashboardComponent implements OnInit {
   surveys: HostSurvey[] = [];
   isLoading = true;
   errorMessage = '';
+  successMessage = '';
   isPublishing = false;
+  editingTitleId: number | null = null;
+  editTitleValue = '';
+  isSavingTitle = false;
 
   constructor(
     private apiService: ApiService,
@@ -118,5 +123,47 @@ export class DashboardComponent implements OnInit {
 
   viewResults(surveyId: number) {
     this.router.navigate(['/host/results', surveyId]);
+  }
+
+  startEditTitle(survey: HostSurvey) {
+    this.editingTitleId = survey.id;
+    this.editTitleValue = survey.title;
+  }
+
+  cancelEditTitle() {
+    this.editingTitleId = null;
+    this.editTitleValue = '';
+  }
+
+  saveTitle(survey: HostSurvey) {
+    const newTitle = this.editTitleValue.trim();
+
+    if (newTitle.length < 5) {
+      this.errorMessage = 'Title need to be at least 5 characters';
+      setTimeout(() => (this.errorMessage = ''), 3000);
+      return;
+    }
+
+    if (newTitle === survey.title) {
+      this.cancelEditTitle();
+      return;
+    }
+
+    this.isSavingTitle = true;
+    this.apiService.updateSurvey(survey.id, { title: newTitle }).subscribe({
+      next: (res: any) => {
+        survey.title = newTitle;
+        // ↑ Update local state
+        this.editingTitleId = null;
+        this.isSavingTitle = false;
+        this.successMessage = 'Title updated successfully.';
+        setTimeout(() => (this.successMessage = ''), 3000);
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.msg || 'Failed to update title.';
+        this.isSavingTitle = false;
+        setTimeout(() => (this.errorMessage = ''), 3000);
+      },
+    });
   }
 }

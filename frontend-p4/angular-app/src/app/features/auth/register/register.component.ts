@@ -5,9 +5,32 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+
+function passwordMatchValidator(
+  control: AbstractControl,
+): ValidationErrors | null {
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
+
+  if (!password || !confirmPassword) return null;
+
+  if (password.value !== confirmPassword.value) {
+    // throw error if mismatch
+    confirmPassword.setErrors({ passwordMismatch: true });
+    return { passwordMismatch: true };
+  } else {
+    // clear mistmatch error once password match
+    const errors = { ...confirmPassword.errors };
+    delete errors['passwordMismatch'];
+    confirmPassword.setErrors(Object.keys(errors).length ? errors : null);
+    return null;
+  }
+}
 
 @Component({
   selector: 'app-register',
@@ -27,13 +50,19 @@ export class RegisterComponent {
     private authService: AuthService,
     private router: Router,
   ) {
-    this.registerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['USER'],
-      // ↑ Default role is USER — HOST can be selected in the form
-    });
+    this.registerForm = this.fb.group(
+      {
+        name: ['', [Validators.required, Validators.minLength(2)]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', [Validators.required]],
+        role: ['USER'],
+        // ↑ Default role is USER — HOST can be selected in the form
+      },
+      {
+        validators: passwordMatchValidator,
+      },
+    );
   }
 
   get name() {
@@ -44,6 +73,9 @@ export class RegisterComponent {
   }
   get password() {
     return this.registerForm.get('password');
+  }
+  get confirmPassword() {
+    return this.registerForm.get('confirmPassword');
   }
   get role() {
     return this.registerForm.get('role');
