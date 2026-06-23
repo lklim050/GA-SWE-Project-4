@@ -6,13 +6,13 @@
       <p class="subtitle">
         Hi {{ currentUser?.name }}, You can manage your surveys here:
       </p>
-      <p class="subtitle">
+      <p class="disclaimer">
         Disclaimers: Please inform ADMIN if you want to revert a published state
         back to draft but do note that existing responses would be deleted to
         maintain the database integrity.
       </p>
     </div>
-    <a routerLink="/host/create" class="btn-primary"> + Create Survey </a>
+    <a routerLink="/host/create" class="btn-primary"> +Create </a>
   </div>
 
   <!-- Error -->
@@ -37,7 +37,8 @@
       <!-- Survey Info -->
       <div class="survey-info">
         <h2>
-          {{ survey.title }} <span class="survey-id">#{{ survey.id }}</span>
+          {{ survey.title }}
+          <span class="survey-id-badge">#{{ survey.id }}</span>
         </h2>
 
         <div class="survey-meta">

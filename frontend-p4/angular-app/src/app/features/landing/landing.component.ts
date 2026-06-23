@@ -51,7 +51,11 @@ export class LandingComponent {
       textColor: 'text-slate-600',
       bgColor: 'bg-slate-50',
       borderColor: 'border-slate-200',
-      perks: ['All Bronze perks', 'Priority survey access', 'Weekly digest'],
+      perks: [
+        'All Bronze Perks',
+        'Silver Member Badge',
+        'Weekly Digest (coming soon...)',
+      ],
     },
     {
       name: 'Gold',
@@ -61,7 +65,11 @@ export class LandingComponent {
       textColor: 'text-yellow-700',
       bgColor: 'bg-yellow-50',
       borderColor: 'border-yellow-200',
-      perks: ['All Silver perks', 'Bonus point surveys', 'Gold member badge'],
+      perks: [
+        'All Silver Perks',
+        'Gold Member Badge',
+        'Bonus Point Surveys (coming soon...)',
+      ],
     },
     {
       name: 'Platinum',
@@ -71,7 +79,11 @@ export class LandingComponent {
       textColor: 'text-cyan-700',
       bgColor: 'bg-cyan-50',
       borderColor: 'border-cyan-200',
-      perks: ['All Gold perks', 'Exclusive surveys', 'Top of leaderboard'],
+      perks: [
+        'All Gold Perks',
+        'Exclusive Platinum Badge',
+        'Top of Leaderboard (coming soon...)',
+      ],
     },
   ];
   steps = [
@@ -114,16 +126,16 @@ export class LandingComponent {
     },
     {
       icon: '🔒',
-      title: 'Fraud Detection',
-      desc: 'Every text response is screened by AI to ensure data quality and authentic feedback.',
+      title: 'Data Protection',
+      desc: 'Every text questions and responses are authenticated and protected to ensure data quality and authentic feedback.',
     },
     {
       icon: '👥',
       title: 'Role-Based Access',
-      desc: 'Separate experiences for Survey Takers, Hosts, and Admins — everyone gets the right tools.',
+      desc: 'Separate experiences for Survey Takers and Hosts — everyone gets the right tools.',
     },
     {
-      icon: '🇸🇬',
+      icon: '🦁',
       title: 'Built for Singapore',
       desc: 'Designed with Singapore community topics in mind — transport, food, lifestyle and more.',
     },

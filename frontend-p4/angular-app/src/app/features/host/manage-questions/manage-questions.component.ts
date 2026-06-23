@@ -8,7 +8,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ApiService, Question } from '../../../services/api.service';
+import {
+  ApiService,
+  Question,
+  SurveyDetail,
+} from '../../../services/api.service';
 
 @Component({
   selector: 'app-manage-questions',
@@ -18,10 +22,12 @@ import { ApiService, Question } from '../../../services/api.service';
   styleUrl: './manage-questions.component.css',
 })
 export class ManageQuestionsComponent implements OnInit {
+  survey: SurveyDetail | null = null;
   surveyId!: number;
   // ! means surveyId will be set in ngOnInit from route params
   questions: Question[] = [];
-  isLoading = true;
+  isSurveyLoading = true;
+  isQuestionLoading = true;
   isAdding = false;
   errorMessage = '';
   successMessage = '';
@@ -79,7 +85,7 @@ export class ManageQuestionsComponent implements OnInit {
 
   ngOnInit() {
     this.surveyId = Number(this.route.snapshot.paramMap.get('surveyId'));
-    this.loadQuestion();
+    this.loadSurveyQuestion();
 
     this.type?.valueChanges.subscribe((type) => {
       this.onTypeChange(type);
@@ -92,21 +98,29 @@ export class ManageQuestionsComponent implements OnInit {
     });
   }
 
-  // getSurveyTitle() {
-  //   this.apiService.getSurveys
-  // }
+  loadSurveyQuestion() {
+    this.isSurveyLoading = true;
+    this.apiService.getSurveyDetail(this.surveyId).subscribe({
+      next: (res: any) => {
+        this.survey = res.survey;
+        this.isSurveyLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.msg || 'Failed to load survey.';
+        this.isSurveyLoading = false;
+      },
+    });
 
-  loadQuestion() {
-    this.isLoading = true;
+    this.isQuestionLoading = true;
     this.apiService.getQuestions(this.surveyId).subscribe({
       next: (res: any) => {
         this.questions = res.questions;
-        this.isLoading = false;
+        this.isQuestionLoading = false;
       },
       error: (err) => {
         this.errorMessage =
           err.error?.msg || 'Failed to load questions, please try again later';
-        this.isLoading = false;
+        this.isQuestionLoading = false;
       },
     });
   }

@@ -4,7 +4,9 @@
     <div>
       <button class="back-link" (click)="goBack()">← Back to Dashboard</button>
       <h1>Manage Questions</h1>
-      <!-- <p class="subtitle">Survey ID: {{ survey.title }}</p> -->
+      <p *ngIf="!isSurveyLoading" class="subtitle">
+        Title: {{ survey?.title }}
+      </p>
       <p class="subtitle">Survey ID: {{ surveyId }}</p>
     </div>
     <button class="btn-primary" (click)="toggleAddForm()" *ngIf="!isAdding">
@@ -86,18 +88,21 @@
   </div>
 
   <!-- Loading -->
-  <div *ngIf="isLoading" class="state-box">Loading questions...</div>
+  <div *ngIf="isQuestionLoading" class="state-box">Loading questions...</div>
 
   <!-- Empty State -->
   <div
-    *ngIf="!isLoading && questions.length === 0 && !isAdding"
+    *ngIf="!isQuestionLoading && questions.length === 0 && !isAdding"
     class="state-box"
   >
     <p>No questions yet. Click "+ Add Question" to get started.</p>
   </div>
 
   <!-- Questions List -->
-  <div *ngIf="!isLoading && questions.length > 0" class="questions-list">
+  <div
+    *ngIf="!isQuestionLoading && questions.length > 0"
+    class="questions-list"
+  >
     <div
       *ngFor="let question of questions; let i = index"
       class="question-card"

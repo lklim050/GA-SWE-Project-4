@@ -149,13 +149,13 @@ export const getSurveyById = async (req, res) => {
         .status(404)
         .json({ status: "error", msg: "id does not exist" });
 
-    // Prevent regular USER from accessing an unpublished survey
-    if (!survey.is_published && user.role !== "HOST") {
-      return res.status(403).json({
-        status: "error",
-        msg: "Survey not yet published",
-      });
-    }
+    // // Prevent regular USER from accessing an unpublished survey
+    // if (!survey.is_published && user.role !== "HOST") {
+    //   return res.status(403).json({
+    //     status: "error",
+    //     msg: "Survey not yet published",
+    //   });
+    // }
 
     const existingResponse = await prisma.surveyResponse.findUnique({
       where: {
