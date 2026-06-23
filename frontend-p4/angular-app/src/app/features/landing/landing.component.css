@@ -5,3 +5,35 @@
 :host-context(app-root) app-navbar {
   display: none;
 }
+
+/* Hero section needs position:relative for bg overlay */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Singapore skyline as subtle background */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  /* Shorthand for top:0, right:0, bottom:0, left:0 */
+  background-image: url("/assets/sg-highlight.png");
+  background-size: cover;
+  background-position: center bottom;
+  /* Bottom aligns the skyline to the bottom of section */
+  opacity: 0.25;
+  /* Very subtle — 25% opacity
+       Sketch shows through without
+       competing with the text */
+  pointer-events: none;
+  /* Prevents image from blocking clicks */
+}
+
+/* Dark mode — invert the sketch */
+@media (prefers-color-scheme: dark) {
+  .hero-bg {
+    filter: invert(1) brightness(0.4);
+    opacity: 0.35;
+    /* White lines on dark bg */
+  }
+}

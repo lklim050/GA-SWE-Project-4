@@ -48,10 +48,18 @@
   </nav>
 
   <!-- ─── HERO ─────────────────────────────────────── -->
+  <!-- ─── HERO ─────────────────────────────────────── -->
   <section
-    class="pt-32 pb-24 px-6 bg-gradient-to-br from-slate-50 via-cyan-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
+    class="pt-32 pb-24 px-6 hero-section bg-gradient-to-br from-slate-50 via-cyan-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
   >
-    <div class="max-w-4xl mx-auto text-center">
+    <!-- Singapore skyline background -->
+    <div class="hero-bg"></div>
+    <!-- ↑ This sits behind everything via CSS position:absolute -->
+
+    <!-- All hero content goes in this div -->
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+      <!-- ↑ relative z-10 ensures content sits ABOVE the bg image -->
+
       <!-- Eyebrow -->
       <div
         class="inline-flex items-center gap-2 bg-cyan-100 dark:bg-cyan-900/40 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-700 text-xs font-semibold px-4 py-2 rounded-full mb-8"
@@ -71,13 +79,13 @@
 
       <!-- Tagline -->
       <p
-        class="text-xl md:text-2xl font-light mb-4 text-gray-600 dark:text-gray-300"
+        class="text-xl md:text-2xl font-light mb-4 text-gray-800 dark:text-gray-300"
       >
         your
         <span class="font-semibold text-cyan-600 dark:text-cyan-400">
           Automated Opinions
         </span>
-        <span class="text-gray-400 dark:text-gray-500"> into </span>
+        <span class="text-gray-800 dark:text-gray-200"> into </span>
         <span class="font-semibold text-teal-600 dark:text-teal-400">
           Insights
         </span>
@@ -85,7 +93,7 @@
 
       <!-- Sub tagline -->
       <p
-        class="text-base mb-10 max-w-xl mx-auto text-gray-400 dark:text-gray-500"
+        class="text-base mb-10 max-w-xl mx-auto text-gray-800 dark:text-gray-200"
       >
         Complete community surveys, earn points, climb tiers — while hosts get
         AI-powered analytics on every response.
@@ -108,11 +116,13 @@
       </div>
 
       <!-- Social proof -->
-      <p class="mt-8 text-xs text-gray-400 dark:text-gray-600">
+      <p class="mt-8 text-xs text-gray-800 dark:text-gray-200">
         Free to join · No credit card required · Earn points from day one
       </p>
     </div>
+    <!-- end of content div -->
   </section>
+  <!-- end of hero section -->
 
   <!-- ─── HOW IT WORKS ─────────────────────────────── -->
   <section id="how-it-works" class="py-24 px-6 bg-white dark:bg-gray-900">
@@ -198,7 +208,7 @@
         <h2 class="text-3xl font-bold mb-3 text-gray-800 dark:text-white">
           Earn your way up
         </h2>
-        <p class="text-base text-gray-400 dark:text-gray-500">
+        <p class="text-base text-gray-400 dark:text-gray-400">
           Complete surveys to unlock higher tiers and exclusive perks
         </p>
       </div>
@@ -216,7 +226,7 @@
           </h3>
 
           <p
-            class="text-xs font-semibold text-gray-400 dark:text-gray-500 mb-4 bg-white/60 dark:bg-gray-900/40 rounded-full px-3 py-1 inline-block"
+            class="text-xs font-semibold text-gray-400 dark:text-white mb-4 bg-white/60 dark:bg-gray-900/40 rounded-full px-3 py-1 inline-block"
           >
             {{ tier.points }}
           </p>
@@ -224,7 +234,7 @@
           <ul class="text-left space-y-2">
             <li
               *ngFor="let perk of tier.perks"
-              class="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-2"
+              class="text-xs text-gray-600 dark:text-gray-600 flex items-center gap-2"
             >
               <span class="text-teal-500 font-bold">✓</span>
               {{ perk }}
