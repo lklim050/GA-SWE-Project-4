@@ -25,15 +25,15 @@ AOInsights connects three types of users on one platform:
 
 ### Frontend
 
-| Technology             | Purpose                                 |
-| ---------------------- | --------------------------------------- |
-| Angular 17             | SPA framework (standalone components)   |
-| TypeScript             | Type-safe JavaScript                    |
-| Tailwind CSS           | Landing page styling                    |
-| Vanilla CSS            | Component-level styling + glassmorphism |
-| RxJS                   | Reactive programming, HTTP observables  |
-| Angular Reactive Forms | Dynamic form handling (FormArray)       |
-| ngx-markdown           | AI insight report rendering             |
+| Technology             | Purpose                                            |
+| ---------------------- | -------------------------------------------------- |
+| Angular 17             | Front End Framework                                |
+| TypeScript             | Type-safe JavaScript                               |
+| Tailwind CSS           | Landing page styling                               |
+| Vanilla CSS            | Component-level styling + glassmorphism            |
+| RxJS                   | Reactive programming, HTTP observables             |
+| Angular Reactive Forms | Dynamic form handling (FormArray, FormBuilder etc) |
+| ngx-markdown           | AI insight report rendering                        |
 
 ### Backend
 
@@ -189,7 +189,7 @@ model SurveyInsight {
 
 ### Prerequisites
 
-- Node.js v18+ (v20 LTS recommended)
+- Node.js v18+
 - PostgreSQL 14+
 - npm 9+
 
@@ -312,87 +312,42 @@ Full API documentation is available in:
 ## Project Structure
 
 ```
-.
-├── backend-p4/
-│   ├── package.json
-│   ├── prisma.config.ts
-│   ├── server.js
-│   ├── prisma/
-│   │   ├── schema.prisma
-│   │   └── migrations/
-│   ├── src/
-│   │   ├── controllers/
-│   │   │   ├── questions.js
-│   │   │   ├── responses.js
-│   │   │   ├── roles.js
-│   │   │   ├── seed.js
-│   │   │   ├── surveys.js
-│   │   │   └── users.js
-│   │   ├── db/
-│   │   │   └── prisma.js
-│   │   ├── generated/
-│   │   │   └── prisma/
-│   │   ├── middlewares/
-│   │   │   ├── errorHandlers.js
-│   │   │   ├── users.js
-│   │   │   └── ref/
-│   │   ├── models/
-│   │   │   ├── Appts.js
-│   │   │   ├── Auth.js
-│   │   │   └── Roles.js
-│   │   ├── routers/
-│   │   │   ├── questions.js
-│   │   │   ├── responses.js
-│   │   │   ├── seed.js
-│   │   │   ├── surveys.js
-│   │   │   └── users.js
-│   │   ├── utils/
-│   │   │   └── resultProcessor.js
-│   │   └── validators/
-│   │       ├── auth.js
-│   │       ├── checkErrors.js
-│   │       └── surveys.js
-│   └── generated/
-├── frontend-p4/
-│   └── angular-app/
-│       ├── package.json
-│       ├── angular.json
-│       ├── tsconfig.json
-│       ├── tailwind.config.js
-│       ├── src/
-│       │   ├── index.html
-│       │   ├── main.ts
-│       │   ├── styles.css
-│       │   └── app/
-│       │       ├── app.component.ts
-│       │       ├── app.component.html
-│       │       ├── app.component.css
-│       │       ├── app.routes.ts
-│       │       ├── app.config.ts
-│       │       ├── core/
-│       │       │   ├── guards/
-│       │       │   ├── interceptors/
-│       │       │   └── services/
-│       │       ├── features/
-│       │       │   ├── admin/
-│       │       │   ├── auth/
-│       │       │   ├── home/
-│       │       │   └── ...
-│       │       ├── services/
-│       │       ├── shared/
-│       │       └── assets/
-│       ├── environments/
-│       └── tailwind.config.js
-└── some-references/
-    ├── API_DICTIONARY.md
-    ├── angular.md
-    ├── prisma-postgresql-orm-guide.md
-    └── ...
+AppComponent
+├── core/
+│   ├── guards/          (route protection)
+│   ├── interceptors/    (JWT auth)
+│   └── services/        (state management)
+│
+├── features/
+│   ├── landing/
+│   │   └── LandingComponent          (public entry page)
+│   │
+│   ├── home/
+│   │   └── HomeComponent             (respondent view / survey browse)
+│   │
+│   ├── host/                         (survey creator features)
+│   │   ├── DashboardComponent        (host overview + tier progression)
+│   │   ├── CreateSurveyComponent     (reactive forms + FormArray)
+│   │   ├── ManageQuestionsComponent  (question CRUD)
+│   │   └── ResultsComponent          (CSS bar charts + AI insights)
+│   │
+│   ├── survey-detail/
+│   │   └── SurveyDetailComponent     (respondent survey taking)
+│   │
+│   └── profile/
+│       └── ProfileComponent          (user profile)
+│
+└── shared/
+    ├── NavbarComponent               (global navigation)
+    ├── LogoComponent                 (reusable branding)
+    ├── ConfirmModalComponent         (service-based Subject pattern)
+    ├── InsightModalComponent         (Gemini AI insights display)
+    └── TestComponent                 (dev/testing use)
 ```
 
 ## 📸 Screenshots
 
-### Landing Page
+### Landing Page - General Overview
 
 ![Landing Page](./screenshots/landing.png)
 
@@ -408,11 +363,11 @@ Full API documentation is available in:
 
 ![Host Dashboard](./screenshots/host-dashboard.png)
 
-### Results & Analytics
+### Results & Analytics - Data Collection
 
 ![Results Page](./screenshots/results.png)
 
-### AI Insights Modal
+### AI Insights Modal - One Click Analysis
 
 ![AI Insights](./screenshots/ai-insights.png)
 
@@ -430,8 +385,7 @@ Full API documentation is available in:
 
 ### Why Angular over React?
 
-React was taught during the bootcamp. Angular was chosen deliberately to demonstrate adaptability to new frameworks. Angular's opinionated structure —
-dependency injection, TypeScript-first, RxJS — mirrors enterprise patterns used at companies like GovTech Singapore.
+React was taught during the bootcamp. Angular was chosen deliberately to demonstrate adaptability to learn new frameworks. Angular's structure — dependency injection, TypeScript-first, RxJS — mirrors enterprise patterns used at companies like GovTech Singapore.
 
 ### Why PostgreSQL over MongoDB?
 
@@ -439,7 +393,7 @@ The survey data has clear relational structure — users own surveys, surveys co
 
 ### JWT Auth Strategy
 
-Two-token strategy: short-lived access tokens. An Angular HTTP interceptor automatically attaches Bearer tokens to every request and handles 401 responses by redirecting to login.
+Token strategy: short-lived access token . An Angular HTTP interceptor automatically attaches Bearer tokens to every request and handles 401 responses by redirecting to login.
 
 ### AI Integration
 
@@ -473,3 +427,7 @@ General Assembly Software Engineering Bootcamp — Singapore, 2026.
 ## 📄 Licence
 
 This project is for educational purposes.
+
+```
+
+```
